@@ -1,22 +1,20 @@
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import About from './components/About';
+import InteractiveMap from './components/InteractiveMap';
 import WhatWeDo from './components/WhatWeDo';
 import InkSpace from './components/InkSpace/InkSpace';
 import Gallery from './components/Gallery';
-import Codestruct from './components/Events/CodeStruct';
+import EventsTimeline from './components/EventsTimeline';
 import Footer from './components/Footer';
-import Visioncraft from './components/Events/VisionCraft';
 
 function App() {
   return (
             <div className="min-h-screen">
               <Navbar />
               <Hero />
-              <About />
+              <InteractiveMap />
               <WhatWeDo />
-              <Visioncraft />
-              <Codestruct />              
+              <EventsTimeline />
               <InkSpace />
               <Gallery />
               <Footer />

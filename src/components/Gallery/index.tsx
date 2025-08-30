@@ -1,4 +1,10 @@
 import { motion } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import GalleryImage from './GalleryImage';
 import { galleryImages } from './galleryData';
 
@@ -22,15 +28,33 @@ const Gallery = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <Swiper
+          effect={'coverflow'}
+          grabCursor={true}
+          centeredSlides={true}
+          loop={true}
+          slidesPerView={'auto'}
+          coverflowEffect={{
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+          }}
+          pagination={{ clickable: true }}
+          navigation={true}
+          modules={[EffectCoverflow, Pagination, Navigation]}
+          className="mySwiper"
+        >
           {galleryImages.map((image) => (
-            <GalleryImage
-              key={image.id}
-              src={image.src}
-              alt={image.alt}
-            />
+            <SwiperSlide key={image.id} style={{ width: '300px', height: '400px' }}>
+              <GalleryImage
+                src={image.src}
+                alt={image.alt}
+              />
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </section>
   );

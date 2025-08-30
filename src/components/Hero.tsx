@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { Suspense, Component, ReactNode } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Suspense, Component, ReactNode, useRef } from 'react';
 import GDPThree from './GDPThree';
 
 // Custom Error Boundary
@@ -42,21 +42,34 @@ class ThreeErrorBoundary extends Component<Props, State> {
 }
 
 const Hero = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '200%']);
+
   return (
     <div
+      ref={targetRef}
       className="relative h-screen flex items-center justify-center bg-gradient-to-r from-primary to-secondary bg-cover bg-center"
-      style={{
-        backgroundImage: `url('/backer.jpeg')`,
-      }}
     >
-      <div
+      <motion.div
         className="absolute inset-0 bg-cover bg-center md:hidden"
-        style={{ backgroundImage: "url('/back.jpeg')" }}
-      ></div>
-      <div
+        style={{
+          backgroundImage: "url('/back.jpeg')",
+          y: backgroundY,
+        }}
+      />
+      <motion.div
         className="absolute inset-0 bg-cover bg-center hidden md:block"
-        style={{ backgroundImage: "url('/backer.jpeg')" }}
-      ></div>
+        style={{
+          backgroundImage: "url('/backer.jpeg')",
+          y: backgroundY,
+        }}
+      />
       
       {/* Fixed z-index for overlay */}
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
@@ -65,7 +78,10 @@ const Hero = () => {
       <div className="relative z-10 w-full h-full flex flex-col md:flex-row items-center justify-between px-4 md:px-8 lg:px-16">
         
         {/* Left side - Text content */}
-        <div className="flex-1 text-center content-center md:text-left text-white my-40 md:my-0">
+        <motion.div
+          style={{ y: textY }}
+          className="flex-1 text-center content-center md:text-left text-white my-40 md:my-0"
+        >
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -93,7 +109,7 @@ const Hero = () => {
           >
             Get Started
           </motion.button>
-        </div>
+        </motion.div>
 
         {/* Right side - 3D Model */}
         <div className="flex-1 h-1/2 md:h-full flex justify-center">
